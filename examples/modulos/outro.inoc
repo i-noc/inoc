@@ -1,0 +1,7 @@
+~~ Outro Módulo
+$ somar(a, b)
+  ! "Somando no outro modulo..."
+  $: a + b + 100
+
+$ mensagem()
+  $: "Olá do Outro"

@@ -1,0 +1,8 @@
+~~ Módulo de Matemática
+$ somar(a, b)
+  $: a + b
+
+$ dobrar(x)
+  $: x * 2
+
+pi = 3.14

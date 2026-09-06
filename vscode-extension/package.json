@@ -1,0 +1,107 @@
+{
+  "name": "inoc-lang",
+  "displayName": "I-NOC Language Support",
+  "description": "Suporte oficial para a linguagem I-NOC: intenção nativa orientada por código",
+  "version": "1.4.1",
+  "publisher": "inoc-team",
+  "icon": "images/inoc-logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jose/inoc.git"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "inoc",
+    "programming language",
+    "ui"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:inoc"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "inoc",
+        "aliases": [
+          "I-NOC",
+          "INOC",
+          "inoc"
+        ],
+        "extensions": [
+          ".inoc"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "inoc",
+        "scopeName": "source.inoc",
+        "path": "./syntaxes/inoc.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "inoc",
+        "path": "./snippets/inoc.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "inoc.runFile",
+        "title": "I-NOC: Run File",
+        "category": "I-NOC"
+      }
+    ],
+    "configuration": {
+      "title": "I-NOC",
+      "properties": {
+        "inoc.runtimePath": {
+          "type": "string",
+          "default": "",
+          "description": "Caminho absoluto para o executável 'inoc-runtime' da linguagem I-NOC. Se vazio, a extensão tentará localizá-lo automaticamente."
+        }
+      }
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceExtname == .inoc",
+          "command": "inoc.runFile",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3",
+    "@vscode/test-electron": "^2.2.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.0.2"
+  }
+}

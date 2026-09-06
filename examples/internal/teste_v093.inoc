@@ -1,0 +1,18 @@
+/: TesteDinamico
+/+ Principal
+
+contador = 0
+
+|#texto "Valor Inicial"| # id = "display", tamanho = 30, alinhamento = "centro"
+|#botao "Incrementar"|
+|#botao "Zerar"|
+
+& true
+  @: e
+  ? e == "Incrementar"
+    contador = contador + 1
+    definir("display", "Contagem: " + contador)
+  ??
+    ? e == "Zerar"
+      contador = 0
+      definir("display", "Zerado!")

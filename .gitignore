@@ -1,0 +1,61 @@
+# I-NOC Git Ignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+# Manter executáveis de distribuição oficial conforme solicitado
+!dist/inoc-runtime.exe
+!vscode-extension/bin/inoc-runtime.exe
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+*.vsix
+
+# Extension generated files
+vscode-extension/out/
+vscode-extension/node_modules/
+vscode-extension/temp_analysis.inoc
+
+# IDEs
+.idea/
+.project
+.classpath
+.settings/
+*.swp
+*.bak
+*.tmp
+
+# Logs
+*.log
+logs/
+
+# Local configuration
+.env
+.venv
+venv/

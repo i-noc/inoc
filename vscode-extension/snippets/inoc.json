@@ -1,0 +1,82 @@
+{
+  "Aplicação I-NOC": {
+    "prefix": "app",
+    "body": [
+      "/: ${1:NomeApp} #ui ${2|tk,web|}",
+      "/+ Principal",
+      "",
+      "|#janela| # cor = \"branco\"",
+      "",
+      "~~ Estado inicial",
+      "contador = 0",
+      "",
+      "¢ container_principal # margem = 20",
+      "    |#texto \"Contador: \" + texto(contador)| # id = \"label_contador\"",
+      "    |#botao \"Incrementar\"| # cor = \"azul\", cor_texto = \"branco\"",
+      "",
+      "& true",
+      "    @: e",
+      "    ? e == \"Incrementar\"",
+      "        contador = contador + 1",
+      "        definir(\"label_contador\", \"Contador: \" + texto(contador))"
+    ],
+    "description": "Estrutura básica de uma aplicação I-NOC"
+  },
+  "Função": {
+    "prefix": "fun",
+    "body": [
+      "$ ${1:nome_funcao}(${2:params})",
+      "    $0"
+    ],
+    "description": "Declaração de função"
+  },
+  "Condicional If": {
+    "prefix": "if",
+    "body": [
+      "? ${1:condicao}",
+      "    $0"
+    ],
+    "description": "Estrutura condicional if"
+  },
+  "Condicional If-Else": {
+    "prefix": "ife",
+    "body": [
+      "? ${1:condicao}",
+      "    $2",
+      "£",
+      "    $0"
+    ],
+    "description": "Estrutura condicional if-else"
+  },
+  "Loop While": {
+    "prefix": "while",
+    "body": [
+      "& ${1:condicao}",
+      "    $0"
+    ],
+    "description": "Estrutura de repetição while"
+  },
+  "Loop ForEach": {
+    "prefix": "foreach",
+    "body": [
+      "&: ${1:item} ${2:lista}",
+      "    $0"
+    ],
+    "description": "Estrutura de repetição para cada item"
+  },
+  "Elemento de UI": {
+    "prefix": "el",
+    "body": [
+      "|#${1:botao} \"${2:Conteúdo}\"| # ${3:prop} = ${4:valor}$0"
+    ],
+    "description": "Elemento de interface"
+  },
+  "Container": {
+    "prefix": "cont",
+    "body": [
+      "¢ ${1:nome_container} # ${2:prop} = ${3:valor}",
+      "    $0"
+    ],
+    "description": "Container de UI"
+  }
+}

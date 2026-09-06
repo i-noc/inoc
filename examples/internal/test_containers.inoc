@@ -1,0 +1,15 @@
+/: AppContainers #ui tk
+
+|#texto "Fora do container"|
+
+¢ container # cor = "azul", margem = 10, borda = 2
+    |#texto "Dentro do azul"| # cor_texto = "branco"
+    |#botao "B1"| |#botao "B2"|
+
+    ¢ card # cor = "cinza", margem = 20, borda = 1
+        |#texto "Dentro do card"|
+        |#input "Nome"|
+
+    |#botao "Fim do azul"|
+
+|#botao "Fora no fim"|

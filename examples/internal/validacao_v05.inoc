@@ -1,0 +1,55 @@
+~~ Teste de Validação I-NOC v0.5
+
+/: ValidacaoV05
+§ matematica
+
+~~ 1. Teste de Funções com Condicionais e Retorno
+$ classificar(n)
+  ? n > 0
+    $: "positivo"
+  ??
+    ? n < 0
+      $: "negativo"
+    ??
+      $: "zero"
+
+! "Número 10 é: " + classificar(10)
+! "Número -5 é: " + classificar(-5)
+! "Número 0 é: " + classificar(0)
+
+~~ 2. Teste de Loop com Condicional Interno
+x = 0
+& x < 5
+  ? x * 2 > 5
+    ! "x=" + x + " (Dobro > 5)"
+  ??
+    ! "x=" + x + " (Dobro <= 5)"
+  x = x + 1
+
+~~ 3. Teste de Módulo com Condicional
+? pi > 3
+  ! "Matemática carregada e PI > 3"
+??
+  ! "Erro na constante PI"
+
+~~ 4. Teste de Shadowing e Escopo em Condicionais (Regra 6)
+y = "global"
+$ test_shadow()
+  y = "local"
+  ? true
+    ! "Dentro do ?: " + y
+  $: y
+
+res = test_shadow()
+! "Retorno da função: " + res
+! "Valor global de y: " + y
+
+~~ 5. Teste de Listas e Objetos (Pass-by-sharing - Regra 6)
+// obj
+obj.valor = 10
+
+$ mod_obj(o)
+  o.valor = 20
+
+mod_obj(obj)
+! "Objeto após função (deve ser 20): " + obj.valor
