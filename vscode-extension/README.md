@@ -1,52 +1,52 @@
 # I-NOC Language Support
 
-Suporte oficial para a linguagem de programação **I-NOC** (v1.4.4).
+Official extension for the **I-NOC** programming language (v1.4.5).
 
-I-NOC é uma linguagem de programação orientada à intenção, permitindo o desenvolvimento bilingue (Português/Inglês) com foco em produtividade e interfaces declarativas.
+I-NOC is an intention-oriented programming language, allowing bilingual development (Portuguese/English) with a focus on productivity and declarative interfaces.
 
-## Funcionalidades
+## Features
 
-*   **Syntax Highlighting**: Coloração sintática precisa para arquivos `.inoc`.
-*   **IntelliSense**: Autocomplete contextual para elementos de UI, propriedades e funções nativas via LSP.
-*   **Integrated Runtime**: Execução direta de arquivos `.inoc` através do comando "Run File".
-*   **Web & Desktop Rendering**: Suporte para renderização de interfaces tanto em ambiente Web (Navegador) quanto Desktop (Tkinter).
-*   **Advanced Styling**: Suporte a gradientes, transparências (RGBA), sombras e carregamento de imagens locais via Base64.
-*   **Dynamic Layouts**: Suporte a layouts centralizados (estilo Card) e expansão automática para sistemas de tela cheia (Dashboard/Bento Grid).
-*   **Error Diagnostics**: Identificação de erros sintáticos e lógicos em tempo real.
+*   **Syntax Highlighting**: Precise syntax coloring for `.inoc` files.
+*   **IntelliSense**: Contextual autocomplete for UI elements, properties, and native functions via LSP.
+*   **Integrated Runtime**: Direct execution of `.inoc` files via the "Run File" command.
+*   **Web & Desktop Rendering**: Support for interface rendering in both Web (Browser) and Desktop (Tkinter) environments.
+*   **Advanced Styling**: Support for gradients, transparency (RGBA), shadows, and local image loading via Base64.
+*   **Dynamic Layouts**: Support for auto-centered layouts (Card style) and automatic expansion for full-screen systems (Dashboard/Bento Grid).
+*   **Error Diagnostics**: Real-time identification of syntax and logic errors.
 
-## Exemplo de Código (v1.4.4)
+## Code Example (v1.4.5)
 
 ```inoc
-/: CadastroApp #ui web
-/+ Principal
+/: AppName #ui web
+/+ Main
 
-~~ Container centralizado automaticamente
-¢ card # largura = 400, cor = "branco", arredondamento = 20, padding = 30, alinhamento = "centro"
-    |#imagem "logo.png"| # largura = 80, margem_baixo = 20
-    |#texto "Bem-vindo"| # tamanho = 24, negrito = verdadeiro
+~~ Automatically centered container
+¢ card # width = 400, color = "white", border_radius = 20, padding = 30, alignment = "center"
+    |#image "logo.png"| # width = 80, margin_bottom = 20
+    |#text "Welcome"| # size = 24, bold = true
     
-    |#texto "Usuário"| # alinhamento = "esquerda"
-    |#entrada "Digite seu nome"| # id = campo_nome, largura = "100%"
+    |#text "User"| # alignment = "left"
+    |#input "Enter your name"| # id = field_name, width = "100%"
     
-    |#botao "Confirmar"| # id = btn_confirmar, largura = "100%", cor = "azul"
+    |#button "Confirm"| # id = btn_confirm, width = "100%", color = "blue"
 
-& verdadeiro
-    @: evento
-    ? evento == "btn_confirmar"
-        nome = @ campo_nome
-        ! "Usuário " + nome + " confirmado!"
+& true
+    @: event
+    ? event == "btn_confirm"
+        name = @ field_name
+        ! "User " + name + " confirmed!"
 ```
 
-## Requisitos
+## Requirements
 
-*   Interpretador I-NOC (incluído no pacote da extensão).
-*   Ambiente Python para execução do servidor LSP.
+*   I-NOC Interpreter (included in the extension package).
+*   Python environment for the LSP server.
 
-## Instalação
+## Installation
 
-1.  Pesquise por **i-noc language plugin** no VS Code Marketplace.
-2.  Clique em **Install**.
-3.  O plugin detectará automaticamente o executável do runtime.
+1.  Search for **i-noc language plugin** in the VS Code Marketplace.
+2.  Click **Install**.
+3.  The plugin will automatically detect the runtime executable.
 
 ---
 **I-NOC: Native intention-oriented code.**

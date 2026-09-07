@@ -18,15 +18,21 @@ I-NOC is a programming language designed to allow applications, data, logic, and
 ## Short Example
 ```inoc
 /: MySystem #ui web
-/+ Home
+/+ Main
 
-|#input "Username"| # id = user
-|#button "Login"|
+¢ card # width = 400, color = "white", border_radius = 20, padding = 30, alignment = "center"
+    |#image "logo.png"| # width = 80, margin_bottom = 20
+    |#text "Welcome"| # size = 24, bold = true
+    
+    |#text "User"| # alignment = "left"
+    |#input "Enter your name"| # id = field_name, width = "100%"
+    
+    |#button "Confirm"| # id = btn_confirm, width = "100%", color = "blue"
 
 & true
     @: event
-    ? event == "Login"
-        name = @ user
+    ? event == "btn_confirm"
+        name = @ field_name
         ! "Hello, " + name
 ```
 
@@ -35,12 +41,12 @@ I-NOC is a programming language designed to allow applications, data, logic, and
 *   [Modular Documentation (English)](docs/en/index.md)
 
 ## License
-This project is distributed under the **Apache 2.0** license. See the [LICENSE](LICENSE) file for details.
+This project is distributed under the **Apache 2.0** license. See the [LICENSE.md](vscode-extension/LICENSE.md) file for details.
 
 ---
 
 ### 🇧🇷 Clique aqui para a versão em Português
-Veja o arquivo [LEIA-ME.md](LEIA-ME.md) para a apresentação em português.
+See the [LEIA-ME.md](LEIA-ME.md) file for the Portuguese presentation.
 
 ---
-**I-NOC v1.4.1** - Native intention-oriented code.
+**I-NOC v1.4.5** - Native intention-oriented code.

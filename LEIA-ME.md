@@ -18,15 +18,21 @@ A I-NOC é uma linguagem de programação criada para permitir que aplicações,
 ## Exemplo Rápido
 ```inoc
 /: MeuSistema #ui web
-/+ Inicio
+/+ Principal
 
-|#entrada "Usuário"| # id = usuario
-|#botao "Entrar"|
+¢ card # largura = 400, cor = "branco", arredondamento = 20, padding = 30, alinhamento = "centro"
+    |#imagem "logo.png"| # largura = 80, margem_baixo = 20
+    |#texto "Bem-vindo"| # tamanho = 24, negrito = verdadeiro
+    
+    |#texto "Usuário"| # alinhamento = "esquerda"
+    |#entrada "Digite seu nome"| # id = campo_nome, largura = "100%"
+    
+    |#botao "Confirmar"| # id = btn_confirmar, largura = "100%", cor = "azul"
 
 & verdadeiro
     @: evento
-    ? evento == "Entrar"
-        nome = @ usuario
+    ? evento == "btn_confirmar"
+        nome = @ campo_nome
         ! "Olá, " + nome
 ```
 
@@ -35,7 +41,7 @@ A I-NOC é uma linguagem de programação criada para permitir que aplicações,
 *   [Documentação Modular (Português)](docs/pt-BR/index.md)
 
 ## Licença
-Este projeto é distribuído sob a licença **Apache 2.0**. Veja o arquivo [LICENSE](LICENSE) para detalhes.
+Este projeto é distribuído sob a licença **Apache 2.0**. Veja o arquivo [LICENSE.md](vscode-extension/LICENSE.md) para detalhes.
 
 ---
 
@@ -43,4 +49,4 @@ Este projeto é distribuído sob a licença **Apache 2.0**. Veja o arquivo [LICE
 Check the [README.md](README.md) file for the English presentation.
 
 ---
-**I-NOC v1.4.1** - Código nativo orientado a intenção.
+**I-NOC v1.4.5** - Código nativo orientado a intenção.
