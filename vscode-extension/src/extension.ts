@@ -104,23 +104,29 @@ async function findRuntime(currentFileUri: vscode.Uri, context: vscode.Extension
     const config = vscode.workspace.getConfiguration('inoc');
     const customPath = config.get<string>('runtimePath');
 
+    // 1. Prioridade: Caminho customizado pelo usuário
     if (customPath && fs.existsSync(customPath)) {
         return { path: customPath, isPython: customPath.endsWith('.py') };
     }
 
+    // 2. Segunda Prioridade: Binário nativo da extensão (pacote oficial)
     const exeName = process.platform === 'win32' ? 'inoc-runtime.exe' : 'inoc-runtime';
     const extRuntimePath = path.join(context.extensionPath, 'bin', exeName);
     if (fs.existsSync(extRuntimePath)) {
         return { path: extRuntimePath, isPython: false };
     }
 
+    // 3. Fallback: Ambiente de desenvolvimento ou estrutura de pastas
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFileUri);
     if (workspaceFolder) {
         const distExePath = path.join(workspaceFolder.uri.fsPath, 'dist', exeName);
         if (fs.existsSync(distExePath)) {
             return { path: distExePath, isPython: false };
         }
+    }
 
+    // 4. Fallback final: Busca main.py subindo diretórios (apenas se houver workspace)
+    if (workspaceFolder) {
         let currentDir = path.dirname(currentFileUri.fsPath);
         const rootLimit = path.dirname(workspaceFolder.uri.fsPath);
         while (currentDir !== rootLimit) {
