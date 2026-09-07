@@ -1,6 +1,6 @@
 {
   "name": "inoc-lang",
-  "displayName": "I-NOC Language Support",
+  "displayName": "i-noc language plugin",
   "description": "Official support for the I-NOC programming language: native intention-oriented code.",
   "version": "1.4.1",
   "publisher": "inoc-tools",
