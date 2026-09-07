@@ -2,7 +2,7 @@
   "name": "inoc-lang",
   "displayName": "i-noc language plugin",
   "description": "Official support for the I-NOC programming language: native intention-oriented code.",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "publisher": "inoc-tools",
   "license": "Apache-2.0",
   "homepage": "https://github.com/i-noc/inoc",
@@ -31,9 +31,7 @@
     "workspace"
   ],
   "main": "./out/extension.js",
-  "activationEvents": [
-    "onLanguage:inoc"
-  ],
+  "activationEvents": [],
   "contributes": {
     "languages": [
       {
@@ -82,7 +80,7 @@
     "menus": {
       "editor/context": [
         {
-          "when": "resourceExtname == '.inoc'",
+          "when": "editorLangId == 'inoc'",
           "command": "inoc.runFile",
           "group": "navigation"
         }
@@ -90,25 +88,27 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run package-bundle",
     "compile": "tsc -p ./",
+    "package-bundle": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.75.0",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
+    "esbuild": "^0.17.19",
     "eslint": "^8.28.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
-    "typescript": "^4.9.3",
-    "@vscode/test-electron": "^2.2.0"
+    "typescript": "^4.9.3"
   },
   "dependencies": {
     "vscode-languageclient": "^8.0.2"

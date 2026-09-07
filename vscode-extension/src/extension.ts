@@ -11,61 +11,77 @@ import {
 let client: LanguageClient;
 
 export async function activate(context: vscode.ExtensionContext) {
-    // 1. Localiza o servidor LSP
-    const serverInfo = await findServer(context);
+    try {
+        // 1. Localiza o servidor LSP
+        const serverInfo = await findServer(context);
 
-    if (serverInfo) {
-        const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
-
-        const serverOptions: ServerOptions = {
-            run: { command: pythonCmd, args: [serverInfo.path], transport: TransportKind.stdio },
-            debug: { command: pythonCmd, args: [serverInfo.path], transport: TransportKind.stdio }
-        };
-
-        const clientOptions: LanguageClientOptions = {
-            documentSelector: [{ scheme: 'file', language: 'inoc' }],
-            synchronize: {
-                fileEvents: vscode.workspace.createFileSystemWatcher('**/*.inoc')
-            }
-        };
-
-        client = new LanguageClient(
-            'inocLSP',
-            'I-NOC Language Server',
-            serverOptions,
-            clientOptions
-        );
-
-        client.start();
-    } else {
-        vscode.window.showWarningMessage('Servidor LSP I-NOC não encontrado. Algumas funcionalidades podem estar limitadas.');
-    }
-
-    // 2. Comando de Execução (mantido)
-    let runCommand = vscode.commands.registerCommand('inoc.runFile', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return;
-        const filePath = editor.document.uri.fsPath;
-        const runtimeInfo = await findRuntime(editor.document.uri, context);
-
-        if (!runtimeInfo) {
-            vscode.window.showErrorMessage('Runtime I-NOC não encontrado.');
-            return;
-        }
-
-        const terminal = vscode.window.activeTerminal || vscode.window.createTerminal('I-NOC Runtime');
-        terminal.show();
-
-        if (runtimeInfo.isPython) {
+        if (serverInfo) {
             const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
-            const interpreterDir = path.dirname(runtimeInfo.path);
-            terminal.sendText(`cd "${interpreterDir}"`);
-            terminal.sendText(`${pythonCmd} "${runtimeInfo.path}" "${filePath}"`);
+
+            const serverOptions: ServerOptions = {
+                run: { command: pythonCmd, args: [serverInfo.path], transport: TransportKind.stdio },
+                debug: { command: pythonCmd, args: [serverInfo.path], transport: TransportKind.stdio }
+            };
+
+            const clientOptions: LanguageClientOptions = {
+                documentSelector: [{ scheme: 'file', language: 'inoc' }],
+                synchronize: {
+                    fileEvents: vscode.workspace.createFileSystemWatcher('**/*.inoc')
+                }
+            };
+
+            client = new LanguageClient(
+                'inocLSP',
+                'I-NOC Language Server',
+                serverOptions,
+                clientOptions
+            );
+
+            client.start();
         } else {
-            terminal.sendText(`& "${runtimeInfo.path}" "${filePath}"`);
+            vscode.window.showWarningMessage('Servidor LSP I-NOC não encontrado. Algumas funcionalidades podem estar limitadas.');
         }
-    });
-    context.subscriptions.push(runCommand);
+
+        // 2. Comando de Execução (Reescrito para maior compatibilidade)
+        let runCommand = vscode.commands.registerCommand('inoc.runFile', async () => {
+            try {
+                const editor = vscode.window.activeTextEditor;
+                if (!editor) return;
+                const filePath = editor.document.uri.fsPath;
+                const runtimeInfo = await findRuntime(editor.document.uri, context);
+
+                if (!runtimeInfo) {
+                    vscode.window.showErrorMessage('Runtime I-NOC não encontrado.');
+                    return;
+                }
+
+                let execution: vscode.ProcessExecution | vscode.ShellExecution;
+
+                if (runtimeInfo.isPython) {
+                    const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
+                    execution = new vscode.ProcessExecution(pythonCmd, [runtimeInfo.path, filePath]);
+                } else {
+                    // Uso de ProcessExecution evita problemas com sintaxe de shell (& vs cmd)
+                    execution = new vscode.ProcessExecution(runtimeInfo.path, [filePath]);
+                }
+
+                const task = new vscode.Task(
+                    { type: 'inoc-run' },
+                    vscode.TaskScope.Workspace || vscode.TaskScope.Global,
+                    'Execução I-NOC',
+                    'inoc',
+                    execution
+                );
+
+                await vscode.tasks.executeTask(task);
+            } catch (err) {
+                vscode.window.showErrorMessage(`Erro ao executar arquivo: ${String(err)}`);
+            }
+        });
+        context.subscriptions.push(runCommand);
+    } catch (err) {
+        console.error('Falha na ativação da extensão I-NOC:', err);
+    }
 }
 
 export function deactivate(): Thenable<void> | undefined {
@@ -76,13 +92,11 @@ export function deactivate(): Thenable<void> | undefined {
 }
 
 async function findServer(context: vscode.ExtensionContext): Promise<{ path: string } | undefined> {
-    // 1. Tenta encontrar na pasta 'server' da extensão (pacote oficial)
     const extServerPath = path.join(context.extensionPath, 'server', 'server.py');
     if (fs.existsSync(extServerPath)) {
         return { path: extServerPath };
     }
 
-    // 2. Fallback para ambiente de desenvolvimento (root do workspace)
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (workspaceFolders) {
         const rootPath = workspaceFolders[0].uri.fsPath;
@@ -104,29 +118,23 @@ async function findRuntime(currentFileUri: vscode.Uri, context: vscode.Extension
     const config = vscode.workspace.getConfiguration('inoc');
     const customPath = config.get<string>('runtimePath');
 
-    // 1. Prioridade: Caminho customizado pelo usuário
     if (customPath && fs.existsSync(customPath)) {
         return { path: customPath, isPython: customPath.endsWith('.py') };
     }
 
-    // 2. Segunda Prioridade: Binário nativo da extensão (pacote oficial)
     const exeName = process.platform === 'win32' ? 'inoc-runtime.exe' : 'inoc-runtime';
     const extRuntimePath = path.join(context.extensionPath, 'bin', exeName);
     if (fs.existsSync(extRuntimePath)) {
         return { path: extRuntimePath, isPython: false };
     }
 
-    // 3. Fallback: Ambiente de desenvolvimento ou estrutura de pastas
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFileUri);
     if (workspaceFolder) {
         const distExePath = path.join(workspaceFolder.uri.fsPath, 'dist', exeName);
         if (fs.existsSync(distExePath)) {
             return { path: distExePath, isPython: false };
         }
-    }
 
-    // 4. Fallback final: Busca main.py subindo diretórios (apenas se houver workspace)
-    if (workspaceFolder) {
         let currentDir = path.dirname(currentFileUri.fsPath);
         const rootLimit = path.dirname(workspaceFolder.uri.fsPath);
         while (currentDir !== rootLimit) {

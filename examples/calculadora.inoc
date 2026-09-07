@@ -1,4 +1,4 @@
-/: CalculadoraV1 #ui tk
+/: CalculadoraV1 #ui web
 /+ Principal
 
 |#janela| # cor = "preto"
