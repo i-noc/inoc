@@ -1,40 +1,50 @@
 # I-NOC Language Support
 
-Official extension for the **I-NOC** programming language (v1.4.1).
+Suporte oficial para a linguagem de programação **I-NOC** (v1.4.4).
 
-## What is I-NOC?
+I-NOC é uma linguagem de programação orientada à intenção, permitindo o desenvolvimento bilingue (Português/Inglês) com foco em produtividade e interfaces declarativas.
 
-I-NOC is a programming language built under the motto: **"Native intention-oriented code"**.
+## Funcionalidades
 
-## Features
+*   **Syntax Highlighting**: Coloração sintática precisa para arquivos `.inoc`.
+*   **IntelliSense**: Autocomplete contextual para elementos de UI, propriedades e funções nativas via LSP.
+*   **Integrated Runtime**: Execução direta de arquivos `.inoc` através do comando "Run File".
+*   **Web & Desktop Rendering**: Suporte para renderização de interfaces tanto em ambiente Web (Navegador) quanto Desktop (Tkinter).
+*   **Advanced Styling**: Suporte a gradientes, transparências (RGBA), sombras e carregamento de imagens locais.
+*   **Error Diagnostics**: Identificação de erros sintáticos e lógicos em tempo real.
 
-*   **Syntax Highlighting**: Reliable color coding for v1.4.1 syntax.
-*   **Intelligent IntelliSense**: Contextual suggestions for elements, properties, and native functions via LSP.
-*   **Multilingual Support**: Write code in Portuguese or English (or both).
-*   **Error Diagnostics**: Real-time syntax error identification.
-*   **Run Command**: Execute `.inoc` files directly from VS Code.
-
-## Quick Example (v1.4.1)
+## Exemplo de Código (v1.4.4)
 
 ```inoc
 /: CadastroApp #ui web
 /+ Principal
 
-|#entrada ""| # id = campo_nome, largura = 20
-|#botao "Salvar"|
+¢ card # largura = 400, cor = "branco", arredondamento = 20, padding = 30, alinhamento = "centro"
+    |#imagem "logo.png"| # largura = 80, margem_baixo = 20
+    |#texto "Bem-vindo"| # tamanho = 24, negrito = verdadeiro
+    
+    |#texto "Usuário"| # alinhamento = "esquerda"
+    |#entrada "Digite seu nome"| # id = campo_nome, largura = "100%"
+    
+    |#botao "Confirmar"| # id = btn_confirmar, largura = "100%", cor = "azul"
 
 & verdadeiro
     @: evento
-    ? evento == "Salvar"
+    ? evento == "btn_confirmar"
         nome = @ campo_nome
-        ! "Usuário " + nome + " cadastrado!"
-        definir(|campo_nome|, "")
+        ! "Usuário " + nome + " confirmado!"
 ```
 
-## How to Install
+## Requisitos
 
-1.  Download the `.vsix` file.
-2.  In VS Code, go to extensions, click `...` and select "Install from VSIX...".
+*   Interpretador I-NOC (incluído no pacote da extensão).
+*   Ambiente Python para execução do servidor LSP.
+
+## Instalação
+
+1.  Pesquise por **i-noc language plugin** no VS Code Marketplace.
+2.  Clique em **Install**.
+3.  O plugin detectará automaticamente o executável do runtime.
 
 ---
 **I-NOC: Native intention-oriented code.**

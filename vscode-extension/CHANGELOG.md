@@ -2,29 +2,29 @@
 
 Todas as mudanças notáveis para a extensão I-NOC serão documentadas neste arquivo.
 
+## [1.4.4] - 2024-06-10
+
+### Adicionado
+- Suporte para carregamento de imagens locais via conversão automática para Base64 no motor Web.
+- Novo motor de renderização Web com suporte a gradientes e transparências RGBA.
+- Centralização global dinâmica de interfaces.
+- Suporte para campos de tipo `senha` (password).
+
+### Corrigido
+- Localização robusta do executável `inoc-runtime` em diferentes sistemas de arquivos.
+- Conflitos de alinhamento em containers aninhados.
+- Tratamento de erro ao carregar o módulo principal no Extension Host (Bundling).
+
 ## [1.4.1] - 2024-06-09
 
 ### Adicionado
 - LSP (Language Server Protocol) real integrado.
-- Autocomplete inteligente e contextual baseado na AST da linguagem.
+- Autocomplete inteligente baseado na AST da linguagem.
 - Diagnósticos instantâneos via Language Server.
-- Suporte bilingue aprimorado no IntelliSense.
-
-## [1.4.0] - 2024-06-09
-
-### Adicionado
-- Nova sintaxe de referência de UI: `|id|`.
-- Suporte a autocomplete para referências de UI em funções.
-- Gramática atualizada para destacar referências `|id|` de forma distinta.
 
 ## [1.3.0] - 2024-06-09
 
 ### Adicionado
 - Diagnósticos de erro em tempo real.
 - IntelliSense / Autocomplete básico.
-- Suporte a múltiplos workspaces e busca robusta do interpretador.
-
-## [1.2.2] - 2024-06-09
-
-### Adicionado
-- Versão inicial da extensão oficial I-NOC.
+- Suporte a múltiplos workspaces.

@@ -1,0 +1,27 @@
+/: sistemainoc #ui web
+/+ Login
+
+~~ 1. Estrutura Principal
+¢ tela_cheia # largura = "100vw", altura = "100vh", fundo = "linear-gradient(135deg, #999898 0%, #1f1e1e 100%)", alinhamento = "centro"
+
+    ~~ 2. Card de Login (Compactado para caber na tela)
+    ¢ card_login # largura = 360, cor = "rgba(248, 250, 252, 0.95)", arredondamento = 16, padding = 25, borda = 1, sombra = "0 10px 25px rgba(0,0,0,0.1)", alinhamento = "centro"
+
+        ~~ Cabeçalho (Margens mínimas)
+        |#imagem "C:/Users/jose/Desktop/inoc/examples/inoc_logo_transp.png"| # id = logo, largura = 80, margem_baixo = 10, alinhamento = "centro"
+
+        |#texto "Bem-vindo ao i-noc"| # tamanho = 20, cor_texto = "#0f172a", negrito = true, margem_baixo = 1, alinhamento = "centro"
+        |#texto "Acesse sua conta para continuar"| # tamanho = 12, cor_texto = "#64748b", margem_baixo = 15, alinhamento = "centro"
+
+        ~~ Campos (Espaçamento ultra reduzido)
+        |#texto "Usuário"| # tamanho = 12, cor_texto = "#1e293b", margem_baixo = 2, alinhamento = "esquerda", negrito = true
+        |#entrada "Seu nome de usuário"| # id = campo_user, largura = "100%", cor_fundo = "#ffffff", cor_texto = "#0f172a", arredondamento = 8, margem_baixo = 10, padding = 8
+
+        |#texto "Senha"| # tamanho = 12, cor_texto = "#1e293b", margem_baixo = 2, alinhamento = "esquerda", negrito = true
+        |#senha "Sua senha segura"| # id = campo_pass, largura = "100%", cor_fundo = "#ffffff", cor_texto = "#0f172a", arredondamento = 8, margem_baixo = 20, padding = 8
+
+        ~~ Ação
+        |#botao "Entrar no Sistema"| # id = btn_entrar, largura = "100%", fundo = "linear-gradient(90deg, #2b2b2c 0%, #030303 100%)", cor_texto = "branco", negrito = true, arredondamento = 8, altura = 40, tamanho = 14
+
+        ~~ Rodapé
+        |#link "← Voltar para o site"| # id = link_voltar, cor_texto = "#64748b", tamanho = 12, margem_topo = 15, alinhamento = "centro"

@@ -1,29 +1,32 @@
 /: CalculadoraV1 #ui web
 /+ Principal
 
-|#janela| # cor = "preto"
-
 ~~ 1. Estado Inicial
 visor = "0"
 v1 = 0
 op = ""
 limpar = true
 
-~~ 2. Interface Visual com Containers (v1.2)
-¢ visor_container # margem = 10, cor = "preto"
-    |#texto "0"| # id = "v", tamanho = 48, cor_texto = "branco", alinhamento = "direita", margem = 20
+~~ 2. Interface Visual (Compacta e Centralizada pelo motor)
+¢ calculadora_corpo # cor = "preto", padding = 20, arredondamento = 20, sombra = "0 20px 50px rgba(0,0,0,0.5)"
 
-¢ teclado # margem = 5, cor = "preto"
-    |#botao "AC"| # cor = "cinza", cor_texto = "preto", tamanho = 18 |#botao "+/-"| # cor = "cinza", cor_texto = "preto", tamanho = 18 |#botao "%"| # cor = "cinza", cor_texto = "preto", tamanho = 18 |#botao "/"| # cor = "laranja", cor_texto = "branco", tamanho = 18
-    |#botao "7"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "8"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "9"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "*"| # cor = "laranja", cor_texto = "branco", tamanho = 18
-    |#botao "4"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "5"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "6"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "-"| # cor = "laranja", cor_texto = "branco", tamanho = 18
-    |#botao "1"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "2"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "3"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "+"| # cor = "laranja", cor_texto = "branco", tamanho = 18
-    |#botao "0"| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "."| # cor = "cinza", cor_texto = "branco", tamanho = 18 |#botao "="| # cor = "laranja", cor_texto = "branco", tamanho = 18
+    ¢ visor_area # margem_baixo = 15, alinhamento = "direita"
+        |#texto "0"| # id = "v", tamanho = 48, cor_texto = "branco", largura = 280
+
+    ¢ teclado # gap = 10
+        |#botao "AC"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "+/-"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "%"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "/"| # cor = "laranja", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15
+
+        |#botao "7"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "8"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "9"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "*"| # cor = "laranja", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15
+
+        |#botao "4"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "5"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "6"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "-"| # cor = "laranja", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15
+
+        |#botao "1"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "2"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "3"| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "+"| # cor = "laranja", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15
+
+        |#botao "0"| # cor = "cinza", cor_texto = "branco", largura = 150, altura = 70, arredondamento = 15 |#botao "."| # cor = "cinza", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15 |#botao "="| # cor = "laranja", cor_texto = "branco", largura = 70, altura = 70, arredondamento = 15
 
 ~~ 3. Logica Reativa v1.0
 & true
   @: e
-
   ? procurar("0123456789", e) != -1
     ? limpar
       visor = e
@@ -31,41 +34,19 @@ limpar = true
     £
       visor = visor + e
     definir("v", visor)
-
-  else if e == "."
-    ? procurar(visor, ".") == -1
-      visor = visor + "."
-      limpar = false
-      definir("v", visor)
-
   else if e == "AC"
     visor = "0"
     v1 = 0
     op = ""
     limpar = true
     definir("v", "0")
-
-  else if e == "+/-"
-    n = numero(visor)
-    n = 0 - n
-    visor = texto(n)
-    definir("v", visor)
-
-  else if e == "%"
-    n = numero(visor)
-    n = n / 100
-    visor = texto(n)
-    definir("v", visor)
-
   else if e == "+" or e == "-" or e == "*" or e == "/"
     v1 = numero(visor)
     op = e
     limpar = true
-
   else if e == "="
     v2 = numero(visor)
     res = 0
-
     ? op == "+"
       res = v1 + v2
     else if op == "-"
@@ -77,7 +58,6 @@ limpar = true
         res = "Erro"
       £
         res = v1 / v2
-
     visor = texto(res)
     definir("v", visor)
     limpar = true

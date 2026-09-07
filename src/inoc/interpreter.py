@@ -221,7 +221,20 @@ class Interpreter:
             target_list = self._ui_stack[-1] if self._ui_stack else self.ui_registry[self.current_screen]
             if target_list:
                 el = target_list[-1]
-                el["props"][stmt.property] = self.evaluate(stmt.value)
+                prop = stmt.property
+                val = self.evaluate(stmt.value)
+
+                # Tratamento para compatibilidade TK (evita erro de conversão de string CSS para int)
+                if self.ui_type == "tk":
+                    if prop == "borda" and isinstance(val, str) and "px" in val:
+                        try:
+                            val = float(val.split("px")[0])
+                        except:
+                            val = 1
+                    if prop == "fundo" and isinstance(val, str) and "gradient" in val:
+                        val = "azul" # Fallback simples para TK
+
+                el["props"][prop] = val
         elif isinstance(stmt, PrintStmt): print(f"> {self.stringify(self.evaluate(stmt.value))}")
         elif isinstance(stmt, InputStmt):
             val = self._infer_type(self._get_input())
