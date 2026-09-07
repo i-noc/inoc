@@ -1,7 +1,7 @@
 {
   "name": "inoc-lang",
   "displayName": "i-noc language plugin",
-  "description": "Official support for the I-NOC programming language, including syntax highlighting, IntelliSense, and integrated web/desktop runtime.",
+  "description": "Complete support for the I-NOC programming language. Includes syntax highlighting, IntelliSense, integrated runtime for Web and Desktop, and advanced UI rendering.",
   "version": "1.4.4",
   "publisher": "inoc-tools",
   "license": "Apache-2.0",

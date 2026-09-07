@@ -71,19 +71,19 @@ class WebRenderer:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; background: #fff; color: #1e293b; overflow: hidden; }
-        #app { display: flex; flex-direction: column; width: 100%; height: 100vh; }
-        .row { display: flex; flex-direction: row; box-sizing: border-box; width: 100%; align-items: stretch; }
-        .container { display: flex; flex-direction: column; box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #fff; overflow-x: hidden; }
+        #app { display: flex; flex-direction: column; width: 100%; min-height: 100vh; align-items: center; justify-content: center; }
+        .row { display: flex; flex-direction: row; box-sizing: border-box; gap: 8px; margin-bottom: 8px; align-items: center; justify-content: center; }
+        .container { display: flex; flex-direction: column; box-sizing: border-box; gap: 8px; }
         .inoc-element { display: flex; box-sizing: border-box; position: relative; }
         .texto { background: transparent; white-space: pre-wrap; display: flex; }
-        button { border: none; cursor: pointer; justify-content: center; display: flex; align-items: center; padding: 10px; transition: filter 0.2s; }
+        button { border: none; cursor: pointer; justify-content: center; display: flex; align-items: center; padding: 12px; transition: all 0.2s; }
         button:hover { filter: brightness(1.2); }
-        input { border: 1px solid rgba(255,255,255,0.1); outline: none; box-sizing: border-box; padding: 8px; }
-        img { display: block; max-width: 100%; }
-        .align-center { margin-left: auto; margin-right: auto; text-align: center; }
-        .align-right { margin-left: auto; text-align: right; }
-        .align-left { margin-right: auto; text-align: left; }
+        input { border: 1px solid rgba(255,255,255,0.1); outline: none; box-sizing: border-box; padding: 12px; }
+        img { display: block; max-width: 100%; height: auto; }
+        .align-center { margin-left: auto; margin-right: auto; text-align: center; justify-content: center; }
+        .align-right { margin-left: auto; text-align: right; justify-content: flex-end; }
+        .align-left { margin-right: auto; text-align: left; justify-content: flex-start; }
     </style>
 </head>
 <body>
@@ -102,28 +102,30 @@ class WebRenderer:
             const app = document.getElementById('app'); app.innerHTML = '';
             renderRecursive(app, state.elements, null);
         }
-        function renderRecursive(parent, elements, parentProps) {
-            const isHorizontal = parentProps && parentProps.direcao === 'horizontal';
+        function renderRecursive(parent, elements, parentAlign) {
+            const lines = {};
+            elements.forEach(el => { if (!lines[el.line]) lines[el.line] = []; lines[el.line].push(el); });
+            Object.keys(lines).sort((a,b) => a-b).forEach(l => {
+                const rowDiv = document.createElement('div'); rowDiv.className = 'row';
 
-            if (isHorizontal) {
-                // Se o container pai for horizontal, ignoramos as linhas e colocamos tudo lado a lado
-                elements.forEach(el => parent.appendChild(buildEl(el)));
-            } else {
-                const lines = {};
-                elements.forEach(el => { if (!lines[el.line]) lines[el.line] = []; lines[el.line].push(el); });
-                Object.keys(lines).sort((a,b) => a-b).forEach(l => {
-                    const rowDiv = document.createElement('div'); rowDiv.className = 'row';
-                    if (parentProps && parentProps.alinhamento === 'centro') rowDiv.style.justifyContent = 'center';
-                    lines[l].forEach(el => rowDiv.appendChild(buildEl(el)));
-                    parent.appendChild(rowDiv);
-                });
-            }
+                // Lógica de exceção para tela cheia (Dashboard)
+                const isFullScreen = lines[l].some(el => (el.props.largura === '100vw' || el.props.largura === '100%') && (el.props.altura === '100vh' || el.props.altura === '100%'));
+                if (isFullScreen) {
+                    rowDiv.style.alignSelf = 'stretch';
+                    rowDiv.style.width = '100%';
+                    rowDiv.style.justifyContent = 'flex-start';
+                    rowDiv.style.margin = '0';
+                }
+
+                lines[l].forEach(el => rowDiv.appendChild(buildEl(el)));
+                parent.appendChild(rowDiv);
+            });
         }
         function buildEl(data) {
             const p = data.props || {}; let el;
             if (data.type === 'container') {
                 el = document.createElement('div'); el.className = 'container';
-                if (data.children) renderRecursive(el, data.children, p);
+                if (data.children) renderRecursive(el, data.children, p.alinhamento);
             } else if (data.type === 'texto') {
                 el = document.createElement('div'); el.className = 'texto'; el.innerText = data.value;
             } else if (data.type === 'botao') {
@@ -154,7 +156,7 @@ class WebRenderer:
             if (p.arredondamento) el.style.borderRadius = p.arredondamento + 'px';
             if (p.padding) el.style.padding = p.padding + 'px';
             if (p.sombra) el.style.boxShadow = p.sombra;
-            if (p.borda) el.style.border = isNaN(p.borda) ? p.borda : p.borda + 'px solid rgba(0,0,0,0.1)';
+            if (p.borda) el.style.border = isNaN(p.borda) ? p.borda : p.borda + 'px solid rgba(255,255,255,0.1)';
             if (p.margem_baixo) el.style.marginBottom = p.margem_baixo + 'px';
             if (p.margem_topo) el.style.marginTop = p.margem_topo + 'px';
             if (p.gap) el.style.gap = p.gap + 'px';

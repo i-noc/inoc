@@ -10,7 +10,8 @@ I-NOC é uma linguagem de programação orientada à intenção, permitindo o de
 *   **IntelliSense**: Autocomplete contextual para elementos de UI, propriedades e funções nativas via LSP.
 *   **Integrated Runtime**: Execução direta de arquivos `.inoc` através do comando "Run File".
 *   **Web & Desktop Rendering**: Suporte para renderização de interfaces tanto em ambiente Web (Navegador) quanto Desktop (Tkinter).
-*   **Advanced Styling**: Suporte a gradientes, transparências (RGBA), sombras e carregamento de imagens locais.
+*   **Advanced Styling**: Suporte a gradientes, transparências (RGBA), sombras e carregamento de imagens locais via Base64.
+*   **Dynamic Layouts**: Suporte a layouts centralizados (estilo Card) e expansão automática para sistemas de tela cheia (Dashboard/Bento Grid).
 *   **Error Diagnostics**: Identificação de erros sintáticos e lógicos em tempo real.
 
 ## Exemplo de Código (v1.4.4)
@@ -19,6 +20,7 @@ I-NOC é uma linguagem de programação orientada à intenção, permitindo o de
 /: CadastroApp #ui web
 /+ Principal
 
+~~ Container centralizado automaticamente
 ¢ card # largura = 400, cor = "branco", arredondamento = 20, padding = 30, alinhamento = "centro"
     |#imagem "logo.png"| # largura = 80, margem_baixo = 20
     |#texto "Bem-vindo"| # tamanho = 24, negrito = verdadeiro
