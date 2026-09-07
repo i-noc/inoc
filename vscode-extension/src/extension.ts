@@ -76,20 +76,20 @@ export function deactivate(): Thenable<void> | undefined {
 }
 
 async function findServer(context: vscode.ExtensionContext): Promise<{ path: string } | undefined> {
-    // Tenta encontrar o server.py baseado na estrutura do projeto
+    // 1. Tenta encontrar na pasta 'server' da extensão (pacote oficial)
+    const extServerPath = path.join(context.extensionPath, 'server', 'server.py');
+    if (fs.existsSync(extServerPath)) {
+        return { path: extServerPath };
+    }
+
+    // 2. Fallback para ambiente de desenvolvimento (root do workspace)
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (workspaceFolders) {
         const rootPath = workspaceFolders[0].uri.fsPath;
-        const serverPath = path.join(rootPath, 'src', 'inoc', 'lsp', 'server.py');
-        if (fs.existsSync(serverPath)) {
-            return { path: serverPath };
+        const devServerPath = path.join(rootPath, 'src', 'inoc', 'lsp', 'server.py');
+        if (fs.existsSync(devServerPath)) {
+            return { path: devServerPath };
         }
-    }
-
-    // Fallback para a pasta da extensão (se estivermos empacotando o source)
-    const extServerPath = path.join(context.extensionPath, 'src', 'inoc', 'lsp', 'server.py');
-    if (fs.existsSync(extServerPath)) {
-        return { path: extServerPath };
     }
 
     return undefined;

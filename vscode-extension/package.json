@@ -1,16 +1,20 @@
 {
   "name": "inoc-lang",
   "displayName": "I-NOC Language Support",
-  "description": "Suporte oficial para a linguagem I-NOC: intenção nativa orientada por código",
+  "description": "Official support for the I-NOC programming language: native intention-oriented code.",
   "version": "1.4.1",
-  "publisher": "inoc-team",
-  "icon": "images/inoc-logo.png",
+  "publisher": "inoc-tools",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/i-noc/inoc",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jose/inoc.git"
+    "url": "https://github.com/i-noc/inoc",
+    "directory": "vscode-extension"
   },
+  "bugs": "https://github.com/i-noc/inoc/issues",
+  "icon": "images/inoc-logo.png",
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.80.0"
   },
   "categories": [
     "Programming Languages",
@@ -18,8 +22,13 @@
   ],
   "keywords": [
     "inoc",
-    "programming language",
+    "programming-language",
+    "intelli-sense",
     "ui"
+  ],
+  "extensionKind": [
+    "ui",
+    "workspace"
   ],
   "main": "./out/extension.js",
   "activationEvents": [
@@ -73,7 +82,7 @@
     "menus": {
       "editor/context": [
         {
-          "when": "resourceExtname == .inoc",
+          "when": "resourceExtname == '.inoc'",
           "command": "inoc.runFile",
           "group": "navigation"
         }
